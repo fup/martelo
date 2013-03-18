@@ -1,0 +1,28 @@
+body {
+    margin: 0px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
+    font-family: verdana, arial, helvetica, sans-serif;
+    color: #777;
+    background-color: #fff;
+}
+#menu {
+  border: 3px blue dashed;
+  width: 250px;
+}
+#button {
+  margin: 5px 5px 5px 5px;
+  padding: 2px 2px 2px 2px;
+}
+
+.button {
+  cursor: hand;
+  border: 1px black solid;
+  padding: 2px 2px 2px 2px;
+}
+#result {
+  position: relative;
+}
+#result textarea {
+  width: 90%;
+  height: 100%;
+}

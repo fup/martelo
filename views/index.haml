@@ -1,0 +1,26 @@
+%html
+  %head
+    %link{:rel => "stylesheet", :type => "text/css", :href => "css/main.css", :media =>"screen"}
+    %script{:type => "text/javascript", :src  => "js/jquery-1.6.2.min.js"}
+    %script{:type => "text/javascript", :src  => "js/start.js"}
+    %title Preseed/Kickstart Generator
+  %body
+    <h1>Preseed/Kickstart Generatator</h1>
+    #menu
+      %form
+        #template
+          %label{:for => 'app'}
+            App:
+          %select{:id => 'app', :class => 'entry'}
+            - @apps.each do |app|
+              %option
+                =app
+        #hostname
+          %label{:for => 'hostname'}
+            Hostname:
+          %input{:id => 'hostname', :type => 'text', :value => 'test.com', :class => 'entry' }
+        #button
+          %span{:class => 'button'}
+            Generate Preseed/Kickstart
+    #result
+      %textarea{:readonly => true, :id=>'result'}

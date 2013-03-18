@@ -1,0 +1,25 @@
+name        = "martelo"
+version     = Martelo::VERSION
+authors     = ["Aziz Shamim"]
+email       = ["azizshamim@gmail.com"]
+description = %q{This gem delivers kickstart files based on templates and passed parameters}
+
+A sinatra application to return kickstart file from a series of templates
+
+Syntax: http://server/ks/<server_fqdn>[/<application_template_name>]
+[] == optional
+
+
+i.e. http://kickstart.test.domain/ks/webserver1.test.domain/supercoolwebapp
+
+TODO: separate templates into "pxe", "netboot", "LAN" and "WAN"
+TODO: template orchestation based on app mappings
+
+#Usage
+
+To include it just map the route and application
+
+require 'martelo'
+map '/ks' do
+  run Martelo::App
+end

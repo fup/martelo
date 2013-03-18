@@ -1,0 +1,17 @@
+install
+network --noipv6 --device eth0 --bootproto static --ip <%= @server[:ip] %> --netmask <%= @server[:netmask] %> --gateway <%= @server[:gateway] %> --nameserver 10.4.50.200,10.4.50.201 --hostname=<%= @server[:fqdn] %>
+url --url <%= @config['kickstart'] %>
+text
+reboot --eject
+key --skip
+lang en_US.UTF-8
+keyboard us
+rootpw --iscrypted $1$nnhEUVmq$WtM8cGmYKunxp3xRq/Dat.
+firewall --disabled
+authconfig --enableshadow --enablemd5
+selinux --disabled
+timezone --utc America/Chicago
+bootloader --location=mbr
+<% @config['repositories'].each do |repo| %>
+repo --name=<%= repo['name'] %> --baseurl=<%= repo['baseurl'] %>
+<% end %>

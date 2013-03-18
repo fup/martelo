@@ -1,0 +1,14 @@
+# partitions
+clearpart --linux --initlabel
+part      /boot   --fstype=ext3  --size=100
+part      pv.01                  --size=20000
+part      pv.02                  --size=1       --grow
+volgroup  vg_root --pesize=32768   pv.01
+volgroup  vg_opt  --pesize=32768   pv.02
+logvol    swap    --fstype swap  --name=lv_swap --vgname=vg_root --size=4096
+logvol    /       --fstype=ext3  --name=lv_root --vgname=vg_root --size=12832
+logvol    /home   --fstype=ext3  --name=lv_home --vgname=vg_root --size=2048
+logvol    /opt    --fstype=ext3  --name=lv_opt  --vgname=vg_opt  --size=2048
+logvol    /tmp    --fstype=ext3  --name=lv_tmp  --vgname=vg_opt  --size=2048
+logvol    /usr    --fstype=ext3  --name=lv_usr  --vgname=vg_opt  --size=4096
+logvol    /var    --fstype=ext3  --name=lv_var  --vgname=vg_opt  --size=2048

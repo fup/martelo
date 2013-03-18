@@ -1,0 +1,14 @@
+%pre --interpreter /usr/bin/python --log=/tmp/install.pre.log --erroronfail
+# ---
+# Set up kickstart options
+#   These items are used throughout
+#   the %pre script.
+# ---
+cmdline = open('/proc/cmdline', 'r').read().split()
+bootoptions = {}
+for item in cmdline:
+    if '=' in item:
+        key,value = item.split('=')
+        bootoptions[key] = value
+
+

@@ -1,0 +1,17 @@
+development: &dev
+  domain: us.chstest.net
+  kickstart: http://repo.us.chstest.net/redhat/5.5/x86_64
+  repositories:
+    - name: chs-rhel-5-x86_64
+      baseurl: http://repo.us.chstest.net/chs/redhat/5/x86_64/
+test:
+  <<: *dev
+chstest:
+  <<: *dev
+production:
+  <<: *dev
+  domain: us.chs.net
+  kickstart: http://repo.us.chs.net/redhat/5.5/x86_64
+  repositories:
+    - name: chs-rhel-5-x86_64
+      baseurl: http://repo.us.chs.net/chs/redhat/5/x86_64/

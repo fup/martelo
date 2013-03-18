@@ -1,0 +1,59 @@
+%post --log=/root/install.post.log
+###
+### RHN registration
+###
+echo "Starting RHN registration..."
+echo "RHN registration temporarily suspended..."
+(rhnreg_ks --username XXXXXX --password XXXXXX)
+echo "RHN registration completed..."
+
+### pe-puppet install
+###
+echo "Starting puppet install..."
+yum install -y pe-augeas pe-augeas-libs pe-facter pe-puppet pe-puppet-enterprise-release pe-ruby pe-ruby-augeas pe-rubygem-puppet-module pe-rubygems pe-ruby-irb pe-ruby-ldap pe-ruby-libs pe-ruby-rdoc pe-ruby-ri pe-ruby-shadow
+echo "puppet install completed..."
+
+PUPPET_UID=`id -u pe-puppet`
+PUPPET_GID=`id -g pe-puppet`
+
+groupmod -g 401 pe-puppet
+usermod -u 401 -g 401 pe-puppet
+
+for path in '/etc/puppetlabs/puppet' "/var/run/pe-puppet" "/var/log/pe-puppet" '/var/opt/lib/pe-puppet'; do
+  find $path -user  $PUPPET_UID -exec chown pe-puppet {} \;
+  find $path -group $PUPPET_GID -exec chgrp pe-puppet {} \;
+done
+
+echo "starting puppet config..."
+PUPPET_CONFDIR='/etc/puppetlabs/puppet'
+PUPPET_CONF="${PUPPET_CONFDIR}/puppet.conf"
+PUPPET_VARDIR='/var/opt/lib/pe-puppet'
+PUPPET_LOGDIR="/var/log/pe-puppet"
+PUPPET_RUNDIR="/var/run/pe-puppet"
+
+mkdir -p $PUPPET_CONFDIR $PUPPET_VARDIR $PUPPET
+
+cat > $PUPPET_CONF <<EOF
+[main]
+    vardir = $PUPPET_VARDIR
+    logdir = $PUPPET_LOGDIR
+    rundir = $PUPPET_RUNDIR
+    user = pe-puppet
+    group = pe-puppet
+
+[agent]
+    certname = <%= @server[:fqdn] %>
+    server = puppetmaster.us.chs.net
+    report = true
+    classfile = \$vardir/classes.txt
+    localconfig = \$vardir/localconfig
+    graph = true
+    pluginsync = true
+EOF
+echo "ending puppet config..."
+
+### Service Management ###
+# Start Puppet Agent #
+(/sbin/chkconfig pe-puppet on)
+(/sbin/service pe-puppet start)
+
